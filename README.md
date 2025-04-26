@@ -124,6 +124,38 @@ python -m uvicorn app.main:app --reload
 4. Access the application:
 - Open http://localhost:8000 in your browser
 
+## Running Locally
+
+To run the application locally without Docker:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
+
+The application will start at [http://localhost:8080](http://localhost:8080).
+
+## Running with Docker
+
+To run the application inside a Docker container:
+
+```bash
+docker build -t smartscreenshot .
+docker run -p 8080:8080 smartscreenshot
+```
+
+Then open [http://localhost:8080](http://localhost:8080) in your browser.
+
+## Deploying to Google Cloud Run
+
+Deployment is handled automatically with GitHub Actions:
+
+1. Push changes to the `main` branch.
+2. GitHub Actions will build and deploy the Docker container to Google Cloud Run.
+3. The deployed service URL can be found in the Google Cloud Run console.
+
 ## API Documentation
 
 The API documentation is available at:
