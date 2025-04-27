@@ -1,18 +1,14 @@
-# Use an official Python runtime as a base image
 FROM python:3.11-slim
 
-# Set the working directory
 WORKDIR /app
-
-# Install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code
 COPY . .
 
-# Expose the port that Cloud Run expects
-EXPOSE 8080
-
-# Start the FastAPI server
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}"]
+ENV PORT 8080
+CMD exec uvicorn app.main:app \
+      --host 0.0.0.0 \
+      --port ${PORT:-8080} \
+      --proxy-headers
