@@ -2,15 +2,20 @@ name: Build and Deploy to Google Cloud Run
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  SERVICE_NAME: smartscreenshot
+  REGION: us-central1
+  IMAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/smartscreenshot
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Authenticate to Google Cloud
@@ -18,19 +23,21 @@ jobs:
       with:
         credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
-    - name: Set up Google Cloud SDK
+    - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-    - name: Build and push Docker image
+    - name: Build and push image
       run: |
-        gcloud builds submit screenshot-backend/ --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/smartscreenshot
+        gcloud builds submit screenshot-backend \
+          --tag $IMAGE
 
     - name: Deploy to Cloud Run
       run: |
-        gcloud run deploy smartscreenshot \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/smartscreenshot \
-          --region us-central1 \
+        gcloud run deploy $SERVICE_NAME \
+          --image $IMAGE \
+          --region $REGION \
           --platform managed \
-          --allow-unauthenticated
+          --allow-unauthenticated \
+          --timeout=900s
