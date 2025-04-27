@@ -1,20 +1,18 @@
-# Use an official Python runtime as the base image
+# Use an official Python runtime as a base image
 FROM python:3.11-slim
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the requirements file
+# Install Python dependencies
 COPY requirements.txt .
-
-# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code
 COPY . .
 
-# Expose the port FastAPI uses
+# Expose the port that Cloud Run expects
 EXPOSE 8080
 
-# Run the app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+# Start the FastAPI server
+CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port=8080"]
