@@ -25,7 +25,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        gcloud builds submit --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/smartscreenshot
+        gcloud builds submit screenshot-backend/ --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/smartscreenshot
 
     - name: Deploy to Cloud Run
       run: |
