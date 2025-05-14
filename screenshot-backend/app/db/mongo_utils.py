@@ -2,7 +2,7 @@ import json
 import os
 from datetime import datetime
 from typing import Optional, List, Tuple
-from app.models.user import User
+from ..models.user import User
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
