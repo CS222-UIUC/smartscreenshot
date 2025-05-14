@@ -495,6 +495,68 @@ async def upload_page(request: Request):
     </html>
     """
 
+@app.post("/api/upload")
+async def upload_image(
+    request: Request,
+    file: UploadFile = File(...),
+    description: str = Form(""),
+    folder_id: Optional[str] = Form(None),
+    current_user: User = Depends(get_current_user)
+):
+    # Save the file to disk
+    file_path = await save_upload_file(file, UPLOAD_DIR)
+
+    # Get image labels
+    labels = get_image_labels(file_path)
+
+    # Create a screenshot entry
+    screenshot_data = {
+        "user": current_user.username,
+        "filename": file.filename,
+        "filepath": file_path,
+        "description": description,
+        "folder_id": folder_id,
+        "labels": labels,
+        "created_at": datetime.utcnow().isoformat()
+    }
+
+    # Insert into database
+    inserted_screenshot = insert_screenshot(screenshot_data)
+    
+    return {"message": "Upload successful", "screenshot": inserted_screenshot}
+
+@app.get("/screenshots/image/{screenshot_id}")
+async def get_screenshot_image(
+    screenshot_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    screenshot = get_screenshot_by_id(screenshot_id, current_user.username)
+    if not screenshot:
+        raise HTTPException(status_code=404, detail="Screenshot not found")
+    return FileResponse(screenshot["file_path"])
+
+@app.get("/screenshots/")
+async def list_screenshots(
+    current_user: User = Depends(get_current_user),
+    category: Optional[str] = None,
+    search: Optional[str] = None,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(10, ge=1, le=100)
+):
+    try:
+        screenshots = get_screenshots(
+            user_id=current_user.username,
+            category=category,
+            search_term=search,
+            skip=skip,
+            limit=limit
+        )
+        total = get_screenshot_count(current_user.username, category)
+        
+        return {
+            "total": total,
+            "screenshots": screenshots
+=======
 @app.post("/upload")
 async def upload(request: Request, files: List[UploadFile] = File(...), category: str = Form(...)):
     user = request.session.get("user")
