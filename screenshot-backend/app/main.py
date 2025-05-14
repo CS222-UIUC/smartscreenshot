@@ -694,6 +694,36 @@ async def dashboard(current_user: User = Depends(get_current_user)):
     </html>
     """
 
+@app.post("/api/upload")
+async def upload_image(
+    request: Request,
+    file: UploadFile = File(...),
+    description: str = Form(""),
+    folder_id: Optional[str] = Form(None),
+    current_user: User = Depends(get_current_user)
+):
+    # Save the file to disk
+    file_path = await save_upload_file(file, UPLOAD_DIR)
+
+    # Get image labels
+    labels = get_image_labels(file_path)
+
+    # Create a screenshot entry
+    screenshot_data = {
+        "user": current_user.username,
+        "filename": file.filename,
+        "filepath": file_path,
+        "description": description,
+        "folder_id": folder_id,
+        "labels": labels,
+        "created_at": datetime.utcnow().isoformat()
+    }
+
+    # Insert into database
+    inserted_screenshot = insert_screenshot(screenshot_data)
+    
+    return {"message": "Upload successful", "screenshot": inserted_screenshot}
+
 @app.get("/screenshots/image/{screenshot_id}")
 async def get_screenshot_image(
     screenshot_id: str,
