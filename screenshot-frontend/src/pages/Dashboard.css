@@ -1,0 +1,128 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient background */
+  }
+  
+  .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .dashboard-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+  }
+  
+  .dashboard-header h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add subtle shadow for text */
+  }
+  
+  .dashboard-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .dashboard-content:hover {
+    transform: scale(1.02); /* Slight hover effect for content */
+  }
+  
+  .upload-section, .search-section {
+    margin-bottom: 20px;
+  }
+  
+  .file-input, .search-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    transition: border 0.3s ease;
+  }
+  
+  .file-input:focus, .search-input:focus {
+    border-color: #6a11cb; /* Focus border color */
+    outline: none;
+  }
+  
+  .button {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .upload-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .upload-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+  }
+  
+  .search-btn {
+    background-color: #2196f3;
+    color: white;
+  }
+  
+  .search-btn:hover {
+    background-color: #0b7dda;
+    transform: scale(1.05);
+  }
+  
+  .delete-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .delete-btn:hover {
+    background-color: #e53935;
+    transform: scale(1.05);
+  }
+  
+  .export-btn {
+    background-color: #ff9800;
+    color: white;
+  }
+  
+  .export-btn:hover {
+    background-color: #fb8c00;
+    transform: scale(1.05);
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  @media (max-width: 768px) {
+    .action-buttons {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .button {
+      width: 100%;
+    }
+  }
+  
