@@ -95,14 +95,21 @@ A powerful web application for managing and organizing screenshots using AI-powe
    - Set up service account credentials
    - Update the credentials in the code
 
-4. Run the application:
+4. Run the application backend:
    ```bash
    uvicorn app.main:app --reload
    ```
-
-5. Access the application:
+   
+5. Run the application frontend:
+   ```bash
+   cd screenshot-frontend
+   npm run dev
    ```
-   http://127.0.0.1:8000
+
+6. Access the application:
+   ```
+   http://127.0.0.1:8000 #backend
+   http://127.0.0.1:5173/ #frontend
    ```
 
 ## Usage
